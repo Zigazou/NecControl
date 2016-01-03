@@ -1,3 +1,14 @@
+{- |
+Module      : Temperature
+Description : Commands of the temperature category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the temperature category.
+-}
 module Network.NecControl.Commands.TemperatureSensor
 (temperatureSensorCommands)
 where
@@ -20,6 +31,10 @@ readoutTemperature = Action
     , actConstraints = ReadOnly
     }
 
+{-|
+Commands of the temperature category: selectTemperatureSensor,
+readoutTemperature.
+-}
 temperatureSensorCommands :: Category
 temperatureSensorCommands = Category
     "Temperature sensor"

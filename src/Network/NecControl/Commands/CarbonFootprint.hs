@@ -1,3 +1,14 @@
+{- |
+Module      : CarbonFootprint
+Description : Commands of the carbon footprint category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the carbon footprint category.
+-}
 module Network.NecControl.Commands.CarbonFootprint
 (carbonFootprintCommands)
 where
@@ -36,6 +47,10 @@ readoutCarbonUsageKg = Action
     , actConstraints = ReadOnly
     }
 
+{-|
+Commands of the carbon footprint category: readoutCarbonFootprintG,
+readoutCarbonFootprintKg, readoutCarbonUsageG, readoutCarbonUsageKg.
+-}
 carbonFootprintCommands :: Category
 carbonFootprintCommands = Category
     "Carbon footprint"

@@ -1,3 +1,14 @@
+{- |
+Module      : Adjust
+Description : Commands of the adjust category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the adjust category.
+-}
 module Network.NecControl.Commands.Adjust (adjustCommands) where
 
 import Network.NecControl.Commands.Types
@@ -130,6 +141,11 @@ zoomVPosition = Action
     , actConstraints = MinMax 1 201 "1=100%, 2=101%, 201=300%"
     }
 
+{-|
+Commands of the adjust category: autoSetup, hPosition, vPosition, clock,
+phase, hResolution, vResolution, inputResolution, aspect, zoom,
+zoomHExpansion, zoomVExpansion, zoomHPosition, zoomVPosition
+-}
 adjustCommands :: Category
 adjustCommands = Category
     "Adjust"

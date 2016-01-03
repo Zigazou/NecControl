@@ -1,3 +1,14 @@
+{- |
+Module      : Schedule
+Description : Commands of the schedule category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the schedule category.
+-}
 module Network.NecControl.Commands.Schedule (scheduleCommands) where
 
 import Network.NecControl.Commands.Types
@@ -26,6 +37,9 @@ disableSchedule = Action
     , actConstraints = MinMax 1 7 "1=disable no.1, 7=disable no.7"
     }
 
+{-|
+Commands of the schedule category: offTimer, enableSchedule, disableSchedule.
+-}
 scheduleCommands :: Category
 scheduleCommands = Category
     "Scheduling"

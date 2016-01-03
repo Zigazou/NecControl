@@ -1,3 +1,14 @@
+{- |
+Module      : DisplayProtection
+Description : Commands of the display protection category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the display protection category.
+-}
 module Network.NecControl.Commands.DisplayProtection
 (displayProtectionCommands)
 where
@@ -115,6 +126,11 @@ alertMail = Action
         ]
     }
 
+{-|
+Commands of the display protection category: powerSave, videoPowerSave,
+fanControl, fanSpeed, screenSaverGamma, screenSaverBrightness,
+screenSaverMotion, sideBorderColor, autoBrightness, alertMail.
+-}
 displayProtectionCommands :: Category
 displayProtectionCommands = Category
     "Display protection"

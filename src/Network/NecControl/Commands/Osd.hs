@@ -1,3 +1,14 @@
+{- |
+Module      : Osd
+Description : Commands of the OSD (On-Screen Display) category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the OSD (On-Screen Display) category.
+-}
 module Network.NecControl.Commands.Osd (osdCommands) where
 
 import Network.NecControl.Commands.Types
@@ -102,6 +113,11 @@ closedCaption = Action
         ]
     }
 
+{-|
+Commands of the OSD (On-Screen Display) category: language, menuDisplayTime,
+osdHPosition, osdVPosition, informationOsd, osdTransparency, osdRotation,
+closedCaption.
+-}
 osdCommands :: Category
 osdCommands = Category
     "On-Screen Display (OSD)"

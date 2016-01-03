@@ -1,3 +1,14 @@
+{- |
+Module      : MultiDisplay
+Description : Commands of the multi display category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the multi display category.
+-}
 module Network.NecControl.Commands.MultiDisplay (multiDisplayCommands) where
 
 import Network.NecControl.Commands.Types
@@ -120,6 +131,11 @@ externalControl = Action
         ]
     }
 
+{-|
+Commands of the multi display category: monitorId, groupId, irControl,
+tileMatrixHMonitor, tileMatrixVMonitor, tileMatrixPosition, tileComp,
+tileMatrixMode, tileMatrixMem, powerOnDelay, powerIndicator, externalControl.
+-}
 multiDisplayCommands :: Category
 multiDisplayCommands = Category
     "Multi display"

@@ -1,9 +1,20 @@
+{- |
+Module      : Header
+Description : Generate or read a header of a command packet
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Generate or read a header of a command packet.
+-}
 module Network.NecControl.Header
 ( Equipment (Monitor, Group, AllEquipment, Controller)
 , MessageType ( Command, CommandReply, GetParameter, GetParameterReply
               , SetParameter, SetParameterReply
               )
-, Header (Header), hdrDestination, hdrSource, hdrMsgType, hdrMsgLength
+, Header (Header, hdrDestination, hdrSource, hdrMsgType, hdrMsgLength)
 , updateLength
 )
 where
@@ -16,6 +27,10 @@ import Network.NecControl.NecProtocol (NecValue, toNec, fromNec)
 import Network.NecControl.PacketStructure
     (PacketStructure (StartOfHeader, Reserved0))
 
+{-|
+An `Equipment` designates a monitor, a group of monitors or a controller. It
+is used to either specify a receiver or a sender of a command packet.
+-}
 data Equipment = Monitor Int
                | Group Char
                | AllEquipment
@@ -37,6 +52,10 @@ instance NecValue Equipment where
                 | otherwise = Left "Invalid equipment"
     fromNec _ = Left "Invalid equipment"
     
+{-|
+A `MessageType` specifies the type of the `Message` included in a
+`CommandPacket`.
+-}
 data MessageType = Command
                  | CommandReply
                  | GetParameter
@@ -61,14 +80,20 @@ instance NecValue MessageType where
     fromNec [0x46] = Right SetParameterReply
     fromNec _ = Left "Invalid message type"
 
+{-|
+A `Header` is the first part of a `CommandPacket`.
+-}
 data Header = Header
-    { hdrDestination :: Equipment
-    , hdrSource :: Equipment
-    , hdrMsgType :: MessageType
-    , hdrMsgLength :: Word8
+    { hdrDestination :: Equipment -- ^ Receiver of the packet
+    , hdrSource :: Equipment -- ^ Sender of the packet
+    , hdrMsgType :: MessageType -- ^ Message type
+    , hdrMsgLength :: Word8 -- ^ Message length
     }
     deriving (Eq, Show)
 
+{-|
+Update the length of a `Header`.
+-}
 updateLength :: Header -> Int -> Header
 updateLength header lgth = header { hdrMsgLength = fromIntegral lgth }
 

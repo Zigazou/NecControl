@@ -1,3 +1,14 @@
+{- |
+Module      : Picture
+Description : Commands of the picture category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the picture category.
+-}
 module Network.NecControl.Commands.Picture (pictureCommands) where
 
 import Network.NecControl.Commands.Types
@@ -210,6 +221,14 @@ brightSensorRead = Action
     , actConstraints = ReadOnly
     }
 
+
+{-|
+Commands of the picture category: backlight, contrast, sharpness, brightness,
+hue, color, colorTemperature ,colorRed, colorYellow, colorGreen, colorCyan,
+colorBlue, colorMagenta, gammaCorrection, adaptiveContrast, noiseReduction,
+telecine, pictureMode, ambientBrightnessLow, ambientBrightnessHigh,
+getCurrentIlluminance, brightSensorRead.
+-}
 pictureCommands :: Category
 pictureCommands = Category
     "Picture"

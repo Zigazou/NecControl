@@ -1,3 +1,14 @@
+{- |
+Module      : AdvancedOption
+Description : Commands of the advanced option category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the advanced option category.
+-}
 module Network.NecControl.Commands.AdvancedOption
 (advancedOptionCommands)
 where
@@ -241,6 +252,12 @@ motionCompensation = Action
         ]
     }
 
+{-|
+Commands of the advanced option category: inputDetect, customDetectPriority1,
+customDetectPriority2, customDetectPriority3, customDetectPriority4,
+customDetectPriority5, inputChange, dviMode, bncMode, dsubMode, hdmiSignal,
+deinterlace, colorSystem, overScan, optionSettingAudio, motionCompensation.
+-}
 advancedOptionCommands :: Category
 advancedOptionCommands = Category
     "Advanced options"

@@ -1,3 +1,15 @@
+{- |
+Module      : Main
+Description : Command line utility neccontrol
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+This program allows you to control your Nec LCD monitor from a Unix command
+line.
+-}
 module Main where
 
 import Data.List (find)
@@ -20,30 +32,53 @@ import Network.NecControl.Message
 
 import Control.Monad.Except
 
+{-|
+Handles exceptions in the IO monad.
+-}
 type NecControlIO = ExceptT String IO
 
-ncPutStrLn :: String -> ExceptT String IO ()
+{-|
+PutStrLn version for using in the `NecControlIO` monad.
+-}
+ncPutStrLn :: String -> NecControlIO ()
 ncPutStrLn = liftIO . putStrLn
 
+{-|
+Lift the `Either` monad to the `NecControlIO` monad, making it easier to use
+the `Either` type without resorting to multiple case statement.
+-}
+liftE :: Either String a -> NecControlIO a
+liftE e = case e of
+               Left msg -> throwError msg
+               Right v -> return v
+
+{-|
+Lift the `Maybe` monad to the `NecControlIO` monad, making it easier to use
+the `Maybe` type without resorting to multiple case statement.
+-}
+liftMaybe :: String -> Maybe a -> NecControlIO a
+liftMaybe msg mba = case mba of
+                         Nothing -> throwError msg
+                         Just v -> return v
+
+{-|
+Get all available actions in one list.
+-}
 getActions :: [Category] -> [Action]
 getActions = concatMap catActions
 
+{-|
+Find an `Action` in a list of Action given its humanized name.
+-}
 findActionByCmd :: String -> [Action] -> Either String Action
 findActionByCmd str actions =
     case find (\a -> str == actCommand a) actions of
          Nothing -> Left "Unknown command"
          Just action -> Right action
 
-liftE :: Either String a -> NecControlIO a
-liftE e = case e of
-               Left msg -> throwError msg
-               Right v -> return v
-
-liftMaybe :: String -> Maybe a -> NecControlIO a
-liftMaybe msg mba = case mba of
-                         Nothing -> throwError msg
-                         Just v -> return v
-
+{-|
+Basic help for the end user.
+-}
 simpleHelp :: String
 simpleHelp = unlines
     [ "Usage:"
@@ -64,9 +99,15 @@ simpleHelp = unlines
     , "Note: Every name is case sensitive."
     ]
 
+{-|
+Complete help for the end user (includes basic help).
+-}
 allCommandHelp :: String
 allCommandHelp = unlines $ "List of available commands:" : pretty allCommands
 
+{-|
+Parse arguments from the command line and run commands.
+-}
 parseArgs :: [String] -> NecControlIO ()
 parseArgs [ "help" ] = ncPutStrLn $ unlines [simpleHelp, "", allCommandHelp]
 
@@ -80,6 +121,9 @@ parseArgs (ipAddress:[monitorId]:todo) = do
 
 parseArgs _ = ncPutStrLn simpleHelp
 
+{-|
+Execute a command.
+-}
 execute :: String -> Equipment -> [String] -> NecControlIO ()
 execute _ _ [] = return ()
 
@@ -100,6 +144,9 @@ execute host target ("set":command:value:_) = do
 
 execute _ _ _ = ncPutStrLn simpleHelp >> throwError "Invalid command"
 
+{-|
+Run a Get Parameter command
+-}
 doGetParameter :: Socket -> Equipment -> Action -> NecControlIO Word16
 doGetParameter monitor target action = do
     let command = mkPacket target
@@ -115,6 +162,9 @@ doGetParameter monitor target action = do
          Left msg -> throwError $ msg ++ "\n" ++ prettyHex bin
          Right packet -> return $ repValue (cmpMessage packet)
 
+{-|
+Run a Set Parameter command.
+-}
 doSetParameter :: Socket
                -> Equipment
                -> Action
@@ -133,6 +183,9 @@ doSetParameter monitor target action value = do
          Left msg -> throwError $ msg ++ "\n" ++ prettyHex bin
          Right packet -> return $ repValue (cmpMessage packet)
 
+{-|
+The neccontrol main function.
+-}
 main :: IO ()
 main = do
     args <- getArgs

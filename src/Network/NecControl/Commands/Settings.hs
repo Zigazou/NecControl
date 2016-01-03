@@ -1,3 +1,14 @@
+{- |
+Module      : Settings
+Description : Commands of the settings category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the settings category.
+-}
 module Network.NecControl.Commands.Settings (settingsCommands) where
 
 import Network.NecControl.Commands.Types
@@ -91,6 +102,10 @@ tvChannel = Action
         ]
     }
 
+{-|
+Commands of the settings category: input, mute, screenMute, mts, stillCapture,
+signalInformation, tvChannel.
+-}
 settingsCommands :: Category
 settingsCommands = Category
     "Settings"

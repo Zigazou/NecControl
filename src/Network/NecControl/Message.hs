@@ -1,8 +1,20 @@
+{- |
+Module      : Message
+Description : Generate or read a message of a command packet
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Generate or read a message of a command packet.
+-}
 module Network.NecControl.Message
 ( ResultCode (NoError, UnsupportedOperation)
 , OperationType (SetParameterType, MomentaryType)
-, Message (MsgGetParameter, MsgSetParameter, MsgParameterReply)
-, repResultCode, repOpCode, repOpType, repMaxValue, repValue
+, Message ( MsgGetParameter, MsgSetParameter, MsgParameterReply, repResultCode
+          , repOpCode, repOpType, repMaxValue, repValue
+          )
 , msgConcat
 )
 where
@@ -15,8 +27,12 @@ import Network.NecControl.PacketStructure
     (PacketStructure (StartOfMessage, EndOfMessage))
 import Network.NecControl.Commands.Types (OpCode)
 
-data ResultCode = NoError
-                | UnsupportedOperation
+{-|
+A `ResultCode` is used when a `Message` is a reply. It indicates whether an
+request generated an error or not.
+-}
+data ResultCode = NoError -- ^ Everything went fine
+                | UnsupportedOperation -- ^ Unsupported operation
                 deriving (Eq, Show)
 
 instance NecValue ResultCode where
@@ -27,6 +43,10 @@ instance NecValue ResultCode where
     fromNec [0x30, 0x31] = Right UnsupportedOperation
     fromNec _ = Left "Invalid result code"
 
+{-|
+An `OperationType` indicates if a reply if a set parameter type or a momentary
+type.
+-}
 data OperationType = SetParameterType
                    | MomentaryType
                    deriving (Eq, Show)
@@ -39,16 +59,29 @@ instance NecValue OperationType where
     fromNec [0x30, 0x31] = Right MomentaryType
     fromNec _ = Left "Invalid operation type"
 
+{-|
+A `Message` has different forms. It can be:
+
+- a Get Parameter message
+- a Set Parameter message
+- a reply to either a Get or Set Parameter message
+
+-}
 data Message = MsgGetParameter OpCode
              | MsgSetParameter OpCode Word16
-             | MsgParameterReply { repResultCode :: ResultCode
-                                 , repOpCode :: OpCode
-                                 , repOpType :: OperationType
-                                 , repMaxValue :: Word16
-                                 , repValue :: Word16
-                                 }
+             | MsgParameterReply
+                { repResultCode :: ResultCode -- ^ the result code
+                , repOpCode :: OpCode -- ^ an operation code
+                , repOpType :: OperationType -- ^ an operation type
+                , repMaxValue :: Word16 -- ^ max supported value
+                , repValue :: Word16 -- ^ current or set value
+                }
              deriving (Eq, Show)
 
+{-|
+Helper function encapsulating a message between a `StartOfMessage` and
+`EndOfMessage` field.
+-}
 msgConcat :: [[Word8]] -> [Word8]
 msgConcat ws = toNec StartOfMessage ++ concat ws ++ toNec EndOfMessage
 

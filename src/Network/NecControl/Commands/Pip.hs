@@ -1,3 +1,14 @@
+{- |
+Module      : Pip
+Description : Commands of the PIP (Picture In Picture) category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the PIP (Picture In Picture) category.
+-}
 module Network.NecControl.Commands.Pip (pipCommands) where
 
 import Network.NecControl.Commands.Types
@@ -137,6 +148,11 @@ pipInput = Action
         ]
     }
 
+{-|
+Commands of the PIP (Picture In Picture) category: keepPipMode, pipSize,
+pipHPosition, pipVPosition, pipAspect, textTickerMode, textTickerPosition,
+textTickerSize, textTickerBlend, textTickerDetect, textTickerFadeIn, pipInput.
+-}
 pipCommands :: Category
 pipCommands = Category
     "Picture-In-Picture (PIP)"

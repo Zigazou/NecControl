@@ -1,3 +1,14 @@
+{- |
+Module      : Audio
+Description : Commands of the audio category
+Copyright   : (c) Frédéric BISSON, 2015
+License     : GPL-3
+Maintainer  : zigazou@free.fr
+Stability   : experimental
+Portability : POSIX
+
+Commands of the audio category.
+-}
 module Network.NecControl.Commands.Audio (audioCommands) where
 
 import Network.NecControl.Commands.Types
@@ -85,6 +96,10 @@ audioInput = Action
         ]
     }
 
+{-|
+Commands of the audio category: volume, balance, treble, bass, pipAudio,
+lineOut, surround, audioInput.
+-}
 audioCommands :: Category
 audioCommands = Category
     "Audio"
