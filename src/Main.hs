@@ -23,8 +23,8 @@ import System.Exit (exitWith, exitSuccess, ExitCode(ExitFailure))
 
 import Hexdump (prettyHex)
 
-import Network.NecControl.Commands.Types
-import Network.NecControl.Commands.All (allCommands)
+import Network.NecControl.Parameters.Types
+import Network.NecControl.Parameters.All (allParameters)
 import Network.NecControl.Header
 import Network.NecControl.NecProtocol
 import Network.NecControl.CommandPacket
@@ -103,7 +103,7 @@ simpleHelp = unlines
 Complete help for the end user (includes basic help).
 -}
 allCommandHelp :: String
-allCommandHelp = unlines $ "List of available commands:" : pretty allCommands
+allCommandHelp = unlines $ "List of available commands:" : pretty allParameters
 
 {-|
 Parse arguments from the command line and run commands.
@@ -112,7 +112,7 @@ parseArgs :: [String] -> NecControlIO ()
 parseArgs [ "help" ] = ncPutStrLn $ unlines [simpleHelp, "", allCommandHelp]
 
 parseArgs [ "help", command ] = do
-    action <- liftE $ findActionByCmd command (getActions allCommands)
+    action <- liftE $ findActionByCmd command (getActions allParameters)
     ncPutStrLn $ unlines $ pretty action
 
 parseArgs (ipAddress:[monitorId]:todo) = do
@@ -128,14 +128,14 @@ execute :: String -> Equipment -> [String] -> NecControlIO ()
 execute _ _ [] = return ()
 
 execute host target ("get":command:_) = do
-    action <- liftE $ findActionByCmd command (getActions allCommands)
+    action <- liftE $ findActionByCmd command (getActions allParameters)
     (monitor, _) <- liftIO $ connectSock host "7142"
     value <- doGetParameter monitor target action
     ncPutStrLn $ fromValue action value
     liftIO $ closeSock monitor
 
 execute host target ("set":command:value:_) = do
-    action <- liftE $ findActionByCmd command (getActions allCommands)
+    action <- liftE $ findActionByCmd command (getActions allParameters)
     value' <- liftE $ toValue action value
     (monitor, _) <- liftIO $ connectSock host "7142"
     newValue <- doSetParameter monitor target action value'

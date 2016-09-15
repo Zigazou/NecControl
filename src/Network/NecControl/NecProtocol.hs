@@ -1,3 +1,5 @@
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
 {- |
 Module      : NecProtocol
 Description : Base module for handling the Nec protocol
@@ -20,6 +22,7 @@ where
 import qualified Data.ByteString as B
 import Data.Word (Word8, Word16)
 import Data.Bits ((.&.), shiftR)
+import Data.Char (chr, ord)
 
 {-|
 Converts a number between 0 and 15 to an hexadecimal digit (ASCII).
@@ -82,6 +85,11 @@ instance NecValue Word16 where
         return $ eh3 * 4096 + eh2 * 256 + eh1 * 16 + eh0
 
     fromNec _ = Left "Wrong number of hex digits, was waiting for 4"
+
+instance NecValue String where
+    toNec i = (fromIntegral . ord) <$> i
+
+    fromNec i = return $ (chr . fromIntegral) <$> i
 
 {-|
 Helper function: converts a value to a `ByteString` ready to be sent to a Nec

@@ -9,9 +9,9 @@ Portability : POSIX
 
 Commands of the PIP (Picture In Picture) category.
 -}
-module Network.NecControl.Commands.Pip (pipCommands) where
+module Network.NecControl.Parameters.Pip (pipCommands) where
 
-import Network.NecControl.Commands.Types
+import Network.NecControl.Parameters.Types
 
 keepPipMode :: Action
 keepPipMode = Action

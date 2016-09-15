@@ -9,30 +9,30 @@ Portability : POSIX
 
 All supported commands grouped by category.
 -}
-module Network.NecControl.Commands.All (allCommands) where
+module Network.NecControl.Parameters.All (allParameters) where
 
-import Network.NecControl.Commands.Types (Category)
+import Network.NecControl.Parameters.Types (Category)
  
-import Network.NecControl.Commands.Adjust
-import Network.NecControl.Commands.AdvancedOption
-import Network.NecControl.Commands.Audio
-import Network.NecControl.Commands.CarbonFootprint
-import Network.NecControl.Commands.DisplayProtection
-import Network.NecControl.Commands.MultiDisplay
-import Network.NecControl.Commands.Osd
-import Network.NecControl.Commands.Picture
-import Network.NecControl.Commands.Pip
-import Network.NecControl.Commands.Schedule
-import Network.NecControl.Commands.Settings
-import Network.NecControl.Commands.TemperatureSensor
+import Network.NecControl.Parameters.Adjust
+import Network.NecControl.Parameters.AdvancedOption
+import Network.NecControl.Parameters.Audio
+import Network.NecControl.Parameters.CarbonFootprint
+import Network.NecControl.Parameters.DisplayProtection
+import Network.NecControl.Parameters.MultiDisplay
+import Network.NecControl.Parameters.Osd
+import Network.NecControl.Parameters.Picture
+import Network.NecControl.Parameters.Pip
+import Network.NecControl.Parameters.Schedule
+import Network.NecControl.Parameters.Settings
+import Network.NecControl.Parameters.TemperatureSensor
 
 {-|
 List of all commands grouped by category: adjust, advancedOption, audio,
 carbonFootprint, displayProtection, multiDisplay, osd, picture, pip, schedule,
 settings, temperatureSensor
 -}
-allCommands :: [Category]
-allCommands =
+allParameters :: [Category]
+allParameters =
     [ adjustCommands
     , advancedOptionCommands
     , audioCommands

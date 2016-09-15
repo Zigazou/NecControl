@@ -9,11 +9,11 @@ Portability : POSIX
 
 Commands of the display protection category.
 -}
-module Network.NecControl.Commands.DisplayProtection
+module Network.NecControl.Parameters.DisplayProtection
 (displayProtectionCommands)
 where
 
-import Network.NecControl.Commands.Types
+import Network.NecControl.Parameters.Types
 
 powerSave :: Action
 powerSave = Action

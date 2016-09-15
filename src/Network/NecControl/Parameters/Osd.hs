@@ -9,9 +9,9 @@ Portability : POSIX
 
 Commands of the OSD (On-Screen Display) category.
 -}
-module Network.NecControl.Commands.Osd (osdCommands) where
+module Network.NecControl.Parameters.Osd (osdCommands) where
 
-import Network.NecControl.Commands.Types
+import Network.NecControl.Parameters.Types
 
 language :: Action
 language = Action

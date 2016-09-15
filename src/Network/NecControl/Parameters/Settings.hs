@@ -9,9 +9,9 @@ Portability : POSIX
 
 Commands of the settings category.
 -}
-module Network.NecControl.Commands.Settings (settingsCommands) where
+module Network.NecControl.Parameters.Settings (settingsCommands) where
 
-import Network.NecControl.Commands.Types
+import Network.NecControl.Parameters.Types
 
 input :: Action
 input = Action

@@ -9,9 +9,9 @@ Portability : POSIX
 
 Commands of the adjust category.
 -}
-module Network.NecControl.Commands.Adjust (adjustCommands) where
+module Network.NecControl.Parameters.Adjust (adjustCommands) where
 
-import Network.NecControl.Commands.Types
+import Network.NecControl.Parameters.Types
 
 autoSetup :: Action
 autoSetup = Action

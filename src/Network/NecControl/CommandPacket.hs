@@ -11,7 +11,7 @@ Generate or read a complete command packet from Nec monitor.
 -}
 module Network.NecControl.CommandPacket
 ( CheckCode (CheckCode)
-, CommandPacket, cmpHeader, cmpMessage, cmpCheckCode
+, CommandPacket (cmpHeader, cmpMessage, cmpCheckCode)
 , mkPacket
 )
 where
@@ -28,7 +28,13 @@ import Network.NecControl.Header
                   )
     , updateLength, Equipment
     )
-import Network.NecControl.Message (Message (MsgGetParameter, MsgSetParameter))
+import Network.NecControl.Message
+    (Message (MsgGetParameter, MsgSetParameter, MsgPowerStatus
+             , MsgPowerControl, MsgAssetDataRead, MsgAssetDataWrite
+             , MsgDateTimeRead, MsgDateTimeWrite, MsgScheduleRead
+             , MsgScheduleWrite, MsgSelfDiagnosis, MsgSerialNo, MsgModelName
+             )
+    )
 import Network.NecControl.PacketStructure (PacketStructure(PacketDelimiter))
 
 {-|
@@ -102,6 +108,25 @@ preparePacket (CommandPacket header message _) =
           checkCode = foldl1 xor $ tail (toNec header') ++ toNec message
 
 {-|
+Get the `MessageType` of a `Message`.
+-}
+messageType :: Message -> MessageType
+messageType (MsgGetParameter {}) = GetParameter
+messageType (MsgSetParameter {}) = SetParameter
+messageType MsgPowerStatus = Command
+messageType (MsgPowerControl {}) = Command
+messageType (MsgAssetDataRead {}) = Command
+messageType (MsgAssetDataWrite {}) = Command
+messageType MsgDateTimeRead = Command
+messageType (MsgDateTimeWrite {}) = Command
+messageType (MsgScheduleRead {}) = Command
+messageType (MsgScheduleWrite {}) = Command
+messageType MsgSelfDiagnosis = Command
+messageType MsgSerialNo = Command
+messageType MsgModelName = Command
+messageType _ = error "Unsupported message type"
+
+{-|
 Generate a completely valid `CommandPacket`. It is primarily meant to send
 from the controller to a monitor.
 -}
@@ -111,13 +136,8 @@ mkPacket :: Equipment -- ^ Receiver (ie. a monitor)
          -> CommandPacket -- ^ A valid command packet
 mkPacket receiver sender message =
     preparePacket $ CommandPacket header message (CheckCode 0x00)
-    where msgType = case message of
-                        (MsgGetParameter _) -> GetParameter
-                        (MsgSetParameter _ _) -> SetParameter
-                        _ -> error "Only Get and Set message type are allowed"
-
-          header = Header { hdrDestination = receiver
+    where header = Header { hdrDestination = receiver
                           , hdrSource = sender
-                          , hdrMsgType = msgType
+                          , hdrMsgType = messageType message
                           , hdrMsgLength = 0x00
                           }

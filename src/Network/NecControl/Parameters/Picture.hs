@@ -9,9 +9,9 @@ Portability : POSIX
 
 Commands of the picture category.
 -}
-module Network.NecControl.Commands.Picture (pictureCommands) where
+module Network.NecControl.Parameters.Picture (pictureCommands) where
 
-import Network.NecControl.Commands.Types
+import Network.NecControl.Parameters.Types
 
 backlight :: Action
 backlight = Action

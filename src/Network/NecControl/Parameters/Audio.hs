@@ -9,9 +9,9 @@ Portability : POSIX
 
 Commands of the audio category.
 -}
-module Network.NecControl.Commands.Audio (audioCommands) where
+module Network.NecControl.Parameters.Audio (audioCommands) where
 
-import Network.NecControl.Commands.Types
+import Network.NecControl.Parameters.Types
 
 volume :: Action
 volume = Action

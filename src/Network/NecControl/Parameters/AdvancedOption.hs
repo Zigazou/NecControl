@@ -9,11 +9,11 @@ Portability : POSIX
 
 Commands of the advanced option category.
 -}
-module Network.NecControl.Commands.AdvancedOption
+module Network.NecControl.Parameters.AdvancedOption
 (advancedOptionCommands)
 where
 
-import Network.NecControl.Commands.Types
+import Network.NecControl.Parameters.Types
 
 inputDetect :: Action
 inputDetect = Action

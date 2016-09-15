@@ -9,11 +9,11 @@ Portability : POSIX
 
 Commands of the temperature category.
 -}
-module Network.NecControl.Commands.TemperatureSensor
+module Network.NecControl.Parameters.TemperatureSensor
 (temperatureSensorCommands)
 where
 
-import Network.NecControl.Commands.Types
+import Network.NecControl.Parameters.Types
 
 selectTemperatureSensor :: Action
 selectTemperatureSensor = Action

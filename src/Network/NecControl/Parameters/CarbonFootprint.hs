@@ -9,11 +9,11 @@ Portability : POSIX
 
 Commands of the carbon footprint category.
 -}
-module Network.NecControl.Commands.CarbonFootprint
+module Network.NecControl.Parameters.CarbonFootprint
 (carbonFootprintCommands)
 where
 
-import Network.NecControl.Commands.Types
+import Network.NecControl.Parameters.Types
 
 readoutCarbonFootprintG :: Action
 readoutCarbonFootprintG = Action

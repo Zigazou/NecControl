@@ -9,9 +9,9 @@ Portability : POSIX
 
 Commands of the multi display category.
 -}
-module Network.NecControl.Commands.MultiDisplay (multiDisplayCommands) where
+module Network.NecControl.Parameters.MultiDisplay (multiDisplayCommands) where
 
-import Network.NecControl.Commands.Types
+import Network.NecControl.Parameters.Types
 
 monitorId :: Action
 monitorId = Action
