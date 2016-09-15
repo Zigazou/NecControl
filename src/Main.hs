@@ -15,9 +15,9 @@ module Main where
 import Data.List (find)
 import System.Environment (getArgs)
 import Network.Simple.TCP
-import Control.Concurrent
 import Data.Word (Word16)
 import Data.Char (ord)
+import Data.ByteString (ByteString, append)
 import System.IO (hPutStrLn, stderr)
 import System.Exit (exitWith, exitSuccess, ExitCode(ExitFailure))
 
@@ -145,6 +145,17 @@ execute host target ("set":command:value:_) = do
 execute _ _ _ = ncPutStrLn simpleHelp >> throwError "Invalid command"
 
 {-|
+Nec monitor seems to send packet in two steps.
+-}
+necRecv :: Socket -> ExceptT String IO ByteString
+necRecv monitor = do
+    reply1 <- recv monitor 64
+    reply2 <- recv monitor 64
+    bin1 <- liftMaybe "Monitor did not reply" reply1
+    bin2 <- liftMaybe "Monitor did not reply" reply2
+    return $ append bin1 bin2
+
+{-|
 Run a Get Parameter command
 -}
 doGetParameter :: Socket -> Equipment -> Action -> NecControlIO Word16
@@ -154,10 +165,7 @@ doGetParameter monitor target action = do
                            (MsgGetParameter $ actOpCode action)
 
     send monitor (necPack command)
-    liftIO $ threadDelay 100000
-    reply <- recv monitor 64
-    bin <- liftMaybe "Monitor did not reply" reply
-
+    bin <- necRecv monitor
     case necUnpack bin of
          Left msg -> throwError $ msg ++ "\n" ++ prettyHex bin
          Right packet -> return $ repValue (cmpMessage packet)
@@ -176,9 +184,7 @@ doSetParameter monitor target action value = do
                            (MsgSetParameter (actOpCode action) value)
 
     send monitor (necPack command)
-    liftIO $ threadDelay 800000
-    reply <- recv monitor 64
-    bin <- liftMaybe "Monitor did not reply" reply
+    bin <- necRecv monitor
     case necUnpack bin of
          Left msg -> throwError $ msg ++ "\n" ++ prettyHex bin
          Right packet -> return $ repValue (cmpMessage packet)
